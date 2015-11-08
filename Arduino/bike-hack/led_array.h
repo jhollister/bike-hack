@@ -14,17 +14,17 @@ struct {
 } typedef LED;
 
 class LED_Array {
-    public:
-        LED_Array(int size);
-        ~LED_Array(void);
-        boolean available(void);
-        LED* fetch_array(void);
-        int get_length(void);
-        LED get_led(int index);
     private:
         LED* led_array;
         Bluetooth bluetooth;
         int array_size;
+    public:
+        LED_Array(int size=DEFAULT_SIZE);
+        ~LED_Array(void);
+        boolean available(void);
+        void fetch_leds(void);
+        int length(void);
+        const LED& operator[](unsigned int i) const { return led_array[i]; }
 };
 
 #endif
