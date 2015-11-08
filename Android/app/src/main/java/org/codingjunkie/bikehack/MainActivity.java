@@ -1,5 +1,6 @@
 package org.codingjunkie.bikehack;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,7 +25,9 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                BlueGuy bt;
+                bt = new BlueGuy(MainActivity.this);
+                Snackbar.make(view, "You just tried to connect bluetooth!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
