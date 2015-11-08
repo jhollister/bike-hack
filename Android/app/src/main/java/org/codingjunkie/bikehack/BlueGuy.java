@@ -25,6 +25,10 @@ import java.util.UUID;
 // 00:17:EC:51:9B:30
 public class BlueGuy {
     private final String TAG = BlueGuy.class.getSimpleName();
+
+    private final String macAddress = "98:D3:31:40:0B:7E";
+    // Bluetooth Dongle HC-06 MAC Address
+    // 98:D3:31:40:0B:7E
     private static final int REQUEST_ENABLE_BT = 1;
     private Context context;
     private BluetoothAdapter myAdapter;

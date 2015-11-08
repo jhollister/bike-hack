@@ -34,8 +34,8 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = MainActivity.class.getSimpleName();
-    private final String macAddress = "20:C9:D0:BA:44:2C";
 
+    private final String macAddress = "98:D3:31:40:0B:7E";
     private final int numLEDs = 30;
     private Integer ledIndex = 0;
     private BlueGuy wheel = null;
