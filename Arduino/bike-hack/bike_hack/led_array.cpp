@@ -2,6 +2,7 @@
 
 LED_Array::LED_Array(int size) {
     array_size = size;
+    pattern = 1;
     led_array = new LED[array_size];
     clear();
 }

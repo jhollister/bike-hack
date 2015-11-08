@@ -3,7 +3,6 @@
 Bluetooth::Bluetooth(void) { // : BluetoothSerial(BT_RX, BT_TX) {
     Serial.begin(9600);
     Serial.setTimeout(300);
-    Serial.println("Bluetooth on...");
 }
 
 boolean Bluetooth::available(void) {
@@ -26,7 +25,6 @@ String Bluetooth::read_string(void) {
     else {
         msg = Serial.readString();
     }
-    Serial.print(msg);
     return msg;
 }
 
