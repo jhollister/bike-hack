@@ -117,17 +117,42 @@
         android:layout_width="fill_parent"
         android:gravity="center_horizontal">
 
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:id="@+id/btnLedUp"
+            android:layout_column="0" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:id="@+id/btnLedDown"
+            android:layout_column="1" />
+
         <TextView
-        android:id="@+id/TextViewColors" android:text="Colors (RGB):"
-        android:layout_weight="1" android:background="#fff"
-        android:textColor="#000000"
-        android:padding="20dip" android:gravity="center"/>
+            android:id="@+id/TextViewColors" android:text="Color LED (RGB):"
+            android:layout_weight="1" android:background="#fff"
+            android:textColor="#000000"
+            android:padding="20dip" android:gravity="center"
+            android:layout_column="2" />
+
+        <!--<TextView-->
+            <!--android:id="@+id/TextViewColorsIndex" android:text=""-->
+            <!--android:layout_weight="2" android:background="#fff"-->
+            <!--android:textColor="#000000"-->
+            <!--android:padding="20dip" android:gravity="center"-->
+            <!--android:layout_column="3" />-->
 
         <TextView
             android:id="@+id/TextViewColorsValue" android:text=""
-            android:layout_weight="1" android:background="#fff"
+            android:layout_weight="2" android:background="#fff"
             android:textColor="#000000"
-            android:padding="20dip" android:gravity="center"/>
+            android:padding="20dip" android:gravity="center"
+            android:layout_column="3" />
     </TableRow>
 
     <!-- Row 3 -->
