@@ -32,6 +32,13 @@ import java.util.Map;
 import java.util.UUID;
 
 
+// Bluetooth Dongle HC-06 MAC Address
+// 98:D3:31:40:0B:7E
+
+// Bluetooth Pebble watch
+// 00:17:EC:51:9B:30
+
+// 20:C9:D0:BA:44:2C
 public class MainActivity extends AppCompatActivity {
     private final String TAG = MainActivity.class.getSimpleName();
 
@@ -349,15 +356,18 @@ public class MainActivity extends AppCompatActivity {
 
 
         boolean isConnected = PebbleKit.isWatchConnected(this);
-        Toast.makeText(this, "Pebble " + (isConnected ? "is" : "is not") + " connected!",
-                Toast.LENGTH_LONG).show();
         if (isConnected) {
+            String msg = "Pattern: " + pattern + "\n" + "Colors:\n" + colorsToString();
+            if (data.get("on") == 0) {
+                msg = "Off";
+            }
+            
             // Push a notification
             final Intent i = new Intent("com.getpebble.action.SEND_NOTIFICATION");
 
             final Map data = new HashMap();
             data.put("title", "BikeHack");
-            data.put("body", "Pattern: " + pattern + "\n" + "Colors:\n" + colorsToString());
+            data.put("body", msg);
             final JSONObject jsonData = new JSONObject(data);
             final String notificationData = new JSONArray().put(jsonData).toString();
 
@@ -365,6 +375,9 @@ public class MainActivity extends AppCompatActivity {
             i.putExtra("sender", "BikeHack");
             i.putExtra("notificationData", notificationData);
             sendBroadcast(i);
+        } else {
+            Toast.makeText(this, "Pebble " + (isConnected ? "is" : "is not") + " connected!",
+                    Toast.LENGTH_LONG).show();
         }
     }
 
