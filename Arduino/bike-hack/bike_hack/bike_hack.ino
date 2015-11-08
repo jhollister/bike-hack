@@ -17,7 +17,6 @@ void loop(){
    delay(500);
    colorWipe2(strip.Color(0,0,0),500);
 }
-o
 void displayArray(){
   if(Neo.available()){
     Neo.fetch_leds();
