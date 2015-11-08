@@ -17,14 +17,19 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = MainActivity.class.getSimpleName();
     private final String macAddress = "20:C9:D0:BA:44:2C";
+    private final int numLEDs = 30;
+    private Integer ledIndex = 0;
     private BlueGuy bt = null;
     private HashMap<String, Integer> data = new HashMap<String, Integer>();
+    private List ledColors;
     private String pattern;
     private String color;
 
@@ -105,62 +110,80 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Button Colors
         final Button buttonColor1 = (Button) findViewById(R.id.btnColr1);
         buttonColor1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                color = "0100";
-                setTextViewValue(R.id.TextViewColorsValue, color);
+                ledColors.set(ledIndex, "0100");
+                setTextViewValue(R.id.TextViewColorsValue, ledColors.get(ledIndex).toString());
             }
         });
 
         final Button buttonColor2 = (Button) findViewById(R.id.btnColr2);
         buttonColor2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                color = "0010";
-                setTextViewValue(R.id.TextViewColorsValue, color);
+                ledColors.set(ledIndex, "0010");
+                setTextViewValue(R.id.TextViewColorsValue, ledColors.get(ledIndex).toString());
             }
         });
 
         final Button buttonColor3 = (Button) findViewById(R.id.btnColr3);
         buttonColor3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                color = "0001";
-                setTextViewValue(R.id.TextViewColorsValue, color);
+                ledColors.set(ledIndex, "0001");
+                setTextViewValue(R.id.TextViewColorsValue, ledColors.get(ledIndex).toString());
             }
         });
 
         final Button buttonColor4 = (Button) findViewById(R.id.btnColr4);
         buttonColor4.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                color = "0110";
-                setTextViewValue(R.id.TextViewColorsValue, color);
+                ledColors.set(ledIndex, "0011");
+                setTextViewValue(R.id.TextViewColorsValue, ledColors.get(ledIndex).toString());
             }
         });
 
         final Button buttonColor5 = (Button) findViewById(R.id.btnColr5);
         buttonColor5.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                color = "0101";
-                setTextViewValue(R.id.TextViewColorsValue, color);
+                ledColors.set(ledIndex, "0101");
+                setTextViewValue(R.id.TextViewColorsValue, ledColors.get(ledIndex).toString());
             }
         });
 
         final Button buttonColor6 = (Button) findViewById(R.id.btnColr6);
         buttonColor6.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                color = "0011";
-                setTextViewValue(R.id.TextViewColorsValue, color);
+                ledColors.set(ledIndex, "0110");
+                setTextViewValue(R.id.TextViewColorsValue, ledColors.get(ledIndex).toString());
             }
         });
 
         final Button buttonColor7 = (Button) findViewById(R.id.btnColr7);
         buttonColor7.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                color = "0111";
-                setTextViewValue(R.id.TextViewColorsValue, color);
+                ledColors.set(ledIndex, "0111");
+                setTextViewValue(R.id.TextViewColorsValue, ledColors.get(ledIndex).toString());
             }
         });
 
+        final Button buttonIncIndex = (Button) findViewById(R.id.btnLedUp);
+        buttonIncIndex.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Integer tmp = incLedIndex();
+                setTextViewValue(R.id.TextViewColors, "RGB LED" + ledIndex.toString() + ":");
+                setTextViewValue(R.id.TextViewColorsValue, ledColors.get(ledIndex).toString());
+            }
+        });
+
+        final Button buttonDecIndex = (Button) findViewById(R.id.btnLedDown);
+        buttonDecIndex.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Integer tmp = decLedIndex();
+                setTextViewValue(R.id.TextViewColors, "RGB LED" + ledIndex.toString() + ":");
+                setTextViewValue(R.id.TextViewColorsValue, ledColors.get(ledIndex).toString());
+            }
+        });
     }
 
     @Override
@@ -204,6 +227,7 @@ public class MainActivity extends AppCompatActivity {
 
         setTextViewValue(R.id.TextViewPatternsValue, pattern);
         setTextViewValue(R.id.TextViewColorsValue, color);
+        setTextViewValue(R.id.TextViewColors, "RGB LED" + ledIndex.toString() + ":");
 
         if (data.get("bt") == 1) {
             doConnect();
@@ -233,6 +257,10 @@ public class MainActivity extends AppCompatActivity {
         color = "0100";
         data.put("bt", 1);
         data.put("on", 1);
+        ledColors = new ArrayList();
+        for (int i = 0; i < numLEDs; i++) {
+            ledColors.add("0100");
+        }
     }
 
     private void setTextViewValue(int id, String str) {
@@ -241,7 +269,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void send() {
-        int numLEDs = 30;
         String tmpString = "";
         String tmpColor = "0000";
 
@@ -251,12 +278,12 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        if (data.get("on") == 1) {
-            tmpColor = color;
+        if (data.get("on") == 0) {
+            tmpColor = "";
         }
 
         for (int i = 0; i < numLEDs; i++) {
-            tmpString += tmpColor;
+            tmpString += ((tmpColor == "") ? "0000" : ledColors.get(i));
         }
 
         bt.write(pattern + binToHex(tmpString) + "\n");
@@ -292,5 +319,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return tmp;
+    }
+
+    public Integer incLedIndex() {
+        return (ledIndex < numLEDs - 1) ? ledIndex++ : ledIndex;
+    }
+
+    public Integer decLedIndex() {
+        return (ledIndex > 0) ? ledIndex-- : ledIndex;
     }
 }
