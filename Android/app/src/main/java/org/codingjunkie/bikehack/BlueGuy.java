@@ -20,6 +20,8 @@ import java.util.UUID;
 public class BlueGuy {
     private final String TAG = BlueGuy.class.getSimpleName();
     private final String macAddress = "20:C9:D0:BA:44:2C";
+    // Bluetooth Dongle HC-06 MAC Address
+    // 98:D3:31:40:0B:7E
     private static final int REQUEST_ENABLE_BT = 1;
     private Context context;
     private BluetoothAdapter myAdapter;
@@ -34,7 +36,6 @@ public class BlueGuy {
 
         this.context = context;
         myAdapter = BluetoothAdapter.getDefaultAdapter();
-//        myUUID = UUID.randomUUID();
 
         if(init()) {
             if(connect(macAddress)) {
@@ -71,8 +72,6 @@ public class BlueGuy {
         myUUID = myDevice.getUuids()[0].getUuid();
 
         try {
-            //tmpSocket = myDevice.createRfcommSocketToServiceRecord(myUUID);
-            //createInsecureRfcommSocketToServiceRecord;createRfcommSocket
             Method meth = myDevice.getClass().getMethod("createInsecureRfcommSocketToServiceRecord",
                     new Class[] {UUID.class});
             tmpSocket = (BluetoothSocket) meth.invoke(myDevice, myUUID);
@@ -132,9 +131,24 @@ public class BlueGuy {
 
     public void close() {
         try {
-            mySocket.close();
+            if (sin != null) {
+                sin.close();
+                sin = null;
+            }
+
+            if (sout != null) {
+                sout.close();
+                sout = null;
+            }
+
+            if (mySocket != null) {
+                mySocket.close();
+                mySocket = null;
+            }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            Log.d(TAG, "BT closed!");
         }
     }
 }
