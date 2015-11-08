@@ -6,6 +6,7 @@
 
 #define BT_TX 10
 #define BT_RX 11
+#define MSG_MAX 100
 
 class Bluetooth {
 
@@ -16,7 +17,7 @@ class Bluetooth {
         void write(char data);
         String read_string(void);
     private:
-        SoftwareSerial BluetoothSerial;
+        //SoftwareSerial BluetoothSerial;
 };
 
 #endif

@@ -19,7 +19,7 @@ class PIXEL {
 		int size = Neo.length();
 	public:
 		void update(void);
-		void display(unsigned int pattern);
+		void display(void);
                 Adafruit_NeoPixel strip = Adafruit_NeoPixel(size,PIN,NEO_GRB + NEO_KHZ800);
 };
 

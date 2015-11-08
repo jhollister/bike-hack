@@ -55,7 +55,8 @@ void PIXEL::colorSetAll(uint32_t c, uint8_t wait){//set all color then show
 	strip.show();
 }
 
-void PIXEL::display(unsigned int pattern){
+void PIXEL::display(void){
+    int pattern = Neo.get_pattern();
 	switch(pattern){
 		case 2:
 			follow();
@@ -81,6 +82,7 @@ void PIXEL::display(unsigned int pattern){
 }
 
 void PIXEL::update(void){
-	if(Neo.available())
+	if(Neo.available()) {
 		Neo.fetch_leds();
+    }
 }
