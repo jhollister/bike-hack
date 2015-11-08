@@ -8,9 +8,9 @@
 
 struct {
     boolean state;
-    char red;
-    char green;
-    char blue;
+    unsigned char red;
+    unsigned char green;
+    unsigned char blue;
 } typedef LED;
 
 class LED_Array {
