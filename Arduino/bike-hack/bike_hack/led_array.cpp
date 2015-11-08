@@ -24,6 +24,9 @@ void LED_Array::fetch_leds(void) {
     int msg_index = 0;
     for (int i = 0; i < array_size; i++) {
         if (i < num_leds) {
+			bluetooth.write_string(String(msg[msg_index]));
+			bluetooth.write_string(String(msg[msg_index+1]));
+			bluetooth.write_string(String(msg[msg_index+2]));
             led_array[i].red = msg[msg_index] == '1' ? 255 : 0;
             led_array[i].green = msg[msg_index + 1] == '1' ? 255 : 0;
             led_array[i].blue = msg[msg_index + 2] == '1' ? 255 : 0;
@@ -35,4 +38,12 @@ void LED_Array::fetch_leds(void) {
             led_array[i].blue = 0;
         }
     }
+}
+
+void LED_Array::clear(void){
+	for(int i(0) ; i < array_size ; i++) {
+		led_array[i].red = 0;
+		led_array[i].green = 0;
+		led_array[i].blue = 0;
+	}
 }

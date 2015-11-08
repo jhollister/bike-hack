@@ -23,6 +23,7 @@ class LED_Array {
         ~LED_Array(void);
         boolean available(void);
         void fetch_leds(void);
+		void clear(void);
         int length(void);
         const LED& operator[](unsigned int i) const { return led_array[i]; }
 };
