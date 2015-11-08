@@ -22,7 +22,7 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = MainActivity.class.getSimpleName();
-    private final String macAddress = "20:C9:D0:BA:44:2C";
+    private final String macAddress = "98:D3:31:40:0B:7E";
     private BlueGuy bt = null;
     private HashMap<String, Integer> data = new HashMap<String, Integer>();
     private String pattern;
