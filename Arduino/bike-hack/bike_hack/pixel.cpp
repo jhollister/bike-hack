@@ -28,10 +28,8 @@ void PIXEL::squeeze(void){
 
 void PIXEL::shift(void){
 	for(uint16_t i = 0; i < size; i++){
-		for(uint16_t j = size; i > 0 ; i--){
-			//
+		for(uint16_t j = size; j > 0 ; j--){
 			strip.setPixelColor(j,strip.getPixelColor(j-1));
-			others--;
 		}
 		strip.setPixelColor(0,strip.Color(Neo[size-i-1].red,Neo[size-i-1].green,Neo[size-i-1].blue));
 		strip.show();
