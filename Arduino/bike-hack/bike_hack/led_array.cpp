@@ -3,6 +3,7 @@
 LED_Array::LED_Array(int size) {
     array_size = size;
     led_array = new LED[array_size];
+    clear();
 }
 
 LED_Array::~LED_Array(void) {
@@ -20,6 +21,7 @@ int LED_Array::length(void) {
 void LED_Array::fetch_leds(void) {
     String msg;
     msg = bluetooth.read_string();
+    bluetooth.write_string(msg);
     int num_leds = msg.length() / LED_LENGTH;
     int msg_index = 0;
     for (int i = 0; i < array_size; i++) {

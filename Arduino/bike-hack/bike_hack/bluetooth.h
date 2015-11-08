@@ -4,8 +4,8 @@
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 
-#define BT_RX 10
-#define BT_TX 11
+#define BT_TX 10
+#define BT_RX 11
 
 class Bluetooth {
 

@@ -14,7 +14,7 @@ void setup(){
 }
 
 void loop(){
-   colorWipe(strip.Color(255,0,0),50);
+   /*colorWipe(strip.Color(255,0,0),50);*/
    displayArray();
    delay(500);
    colorWipe2(strip.Color(0,0,0),500);
