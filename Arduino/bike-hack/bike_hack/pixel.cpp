@@ -33,7 +33,7 @@ void PIXEL::shift(void){
 		}
 		strip.setPixelColor(0,strip.Color(Neo[size-i-1].red,Neo[size-i-1].green,Neo[size-i-1].blue));
 		strip.show();
-		delay(50);
+		delay(100);
 	}
 }
 
