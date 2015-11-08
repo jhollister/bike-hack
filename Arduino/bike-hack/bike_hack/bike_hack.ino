@@ -1,14 +1,15 @@
 #include <Adafruit_NeoPixel.h>
+#include <SoftwareSerial.h>
 #include "led_array.h"
 
 #define PIN 6
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(30,NEO_RGB + NEO_KHZ800);
+LED_Array Neo;
 
 void setup(){
   strip.begin();
   strip.show();
-  Led_Array Neo;
 }
 
 void loop(){
@@ -17,6 +18,7 @@ void loop(){
    delay(500);
    colorWipe2(strip.Color(0,0,0),500);
 }
+
 void displayArray(){
   if(Neo.available()){
     Neo.fetch_leds();
