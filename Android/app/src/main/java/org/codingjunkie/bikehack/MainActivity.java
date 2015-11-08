@@ -2,6 +2,7 @@ package org.codingjunkie.bikehack;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,21 +18,37 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.getpebble.android.kit.Constants;
+import com.getpebble.android.kit.PebbleKit;
+import com.getpebble.android.kit.util.PebbleDictionary;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = MainActivity.class.getSimpleName();
     private final String macAddress = "20:C9:D0:BA:44:2C";
+
     private final int numLEDs = 30;
     private Integer ledIndex = 0;
-    private BlueGuy bt = null;
+    private BlueGuy wheel = null;
     private HashMap<String, Integer> data = new HashMap<String, Integer>();
     private List ledColors;
     private String pattern;
     private String color;
+
+    //Pebble
+    private PebbleKit.PebbleDataReceiver mReceiver;
+    private final static UUID PEBBLE_APP_UUID = UUID.fromString(
+            "6c7c9dac-6100-4790-8e3e-a0938ac89545");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 if (data.get("bt") == 1) {
                     doConnect();
                 } else {
-                    bt.close();
+                    wheel.close();
                 }
             }
 
@@ -240,6 +257,39 @@ public class MainActivity extends AppCompatActivity {
         if (data.get("bt") == 1) {
             doConnect();
         }
+
+        // Get information back from the watch app
+        if(mReceiver == null) {
+            mReceiver = new PebbleKit.PebbleDataReceiver(PEBBLE_APP_UUID) {
+
+                @Override
+                public void receiveData(Context context, int id, PebbleDictionary d) {
+                    // Always ACKnowledge the last message to prevent timeouts
+                    PebbleKit.sendAckToPebble(getBaseContext(), id);
+
+                    // Get action and display
+                    int state = d.getInteger(5).intValue();
+                    switch (state) {
+                        case 0:
+                            data.put("on", 0);
+                            ((Switch) findViewById(R.id.switch2)).setChecked(false);
+                            break;
+                        default:
+                            data.put("on", 1);
+                            ((Switch) findViewById(R.id.switch2)).setChecked(true);
+                            pattern = Integer.toString(state);
+                    }
+                    setTextViewValue(R.id.TextViewPatternsValue, pattern);
+                    send();
+                    Toast.makeText(getBaseContext(),
+                            "Pattern from Pebble: " + Integer.toString(state),
+                            Toast.LENGTH_SHORT).show();
+                }
+            };
+        }
+
+        // Register the receiver to get data
+        PebbleKit.registerReceivedDataHandler(this, mReceiver);
     }
 
     @Override
@@ -281,7 +331,8 @@ public class MainActivity extends AppCompatActivity {
         String tmpColor = "0000";
 
         if (data.get("bt") != 1) {
-            Toast.makeText(getApplicationContext(), "Bluetooth not connected!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Bluetooth not connected!",
+                    Toast.LENGTH_SHORT).show();
             Log.d(TAG, "NO BT!");
             return;
         }
@@ -291,20 +342,42 @@ public class MainActivity extends AppCompatActivity {
         }
 
         for (int i = 0; i < numLEDs; i++) {
-            tmpString += ((tmpColor == "") ? "0000" : ledColors.get(i));
+            tmpString += (tmpColor.equals("") ? "0000" : ledColors.get(i));
         }
 
-        bt.write(pattern + binToHex(tmpString) + "\n");
+        wheel.write(pattern + binToHex(tmpString) + "\n");
+
+
+        boolean isConnected = PebbleKit.isWatchConnected(this);
+        Toast.makeText(this, "Pebble " + (isConnected ? "is" : "is not") + " connected!",
+                Toast.LENGTH_LONG).show();
+        if (isConnected) {
+            // Push a notification
+            final Intent i = new Intent("com.getpebble.action.SEND_NOTIFICATION");
+
+            final Map data = new HashMap();
+            data.put("title", "BikeHack");
+            data.put("body", "Pattern: " + pattern + "\n" + "Colors:\n" + colorsToString());
+            final JSONObject jsonData = new JSONObject(data);
+            final String notificationData = new JSONArray().put(jsonData).toString();
+
+            i.putExtra("messageType", "PEBBLE_ALERT");
+            i.putExtra("sender", "BikeHack");
+            i.putExtra("notificationData", notificationData);
+            sendBroadcast(i);
+        }
     }
 
     private boolean doConnect() {
-        if (bt == null) {
-            bt = new BlueGuy(getBaseContext());
+        if (wheel == null) {
+            wheel = new BlueGuy(getBaseContext());
+            wheel.connect(macAddress);
+            wheel.setReadWritable();
         } else {
-            if (bt.isGood()) {
-                bt.close();
-                if (bt.connect(macAddress)) {
-                    bt.setReadWritable();
+            if (wheel.isGood()) {
+                wheel.close();
+                if (wheel.connect(macAddress)) {
+                    wheel.setReadWritable();
                     Toast.makeText(getApplicationContext(), "Bluetooth connected.",
                             Toast.LENGTH_SHORT).show();
                 } else {
@@ -335,5 +408,13 @@ public class MainActivity extends AppCompatActivity {
 
     public Integer decLedIndex() {
         return (ledIndex > 0) ? ledIndex-- : ledIndex;
+    }
+
+    public String colorsToString() {
+        String tmp = "";
+        for (int i = 0; i < numLEDs; i++) {
+            tmp += "LED" + Integer.toString(i) + ": " + ledColors.get(i).toString() + "\n";
+        }
+        return tmp;
     }
 }

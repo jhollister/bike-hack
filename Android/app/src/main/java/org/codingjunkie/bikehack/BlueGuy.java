@@ -17,11 +17,14 @@ import java.util.UUID;
 /**
  * Created by torcherist on 11/7/15.
  */
+
+// Bluetooth Dongle HC-06 MAC Address
+// 98:D3:31:40:0B:7E
+
+// Bluetooth Pebble watch
+// 00:17:EC:51:9B:30
 public class BlueGuy {
     private final String TAG = BlueGuy.class.getSimpleName();
-    private final String macAddress = "20:C9:D0:BA:44:2C";
-    // Bluetooth Dongle HC-06 MAC Address
-    // 98:D3:31:40:0B:7E
     private static final int REQUEST_ENABLE_BT = 1;
     private Context context;
     private BluetoothAdapter myAdapter;
@@ -38,15 +41,7 @@ public class BlueGuy {
         myAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if(init()) {
-            if(connect(macAddress)) {
-                Log.d(TAG, "Succeeded to connect!");
-                setReadWritable();
-                if(write("hello\n")) {
-                    Log.d(TAG, "Write successful");
-                } else {
-                    Log.d(TAG, "Write failed");
-                }
-            }
+            Log.d(TAG, "init success!");
         } else {
             Log.d(TAG, "Failed to init!");
         }
@@ -99,6 +94,7 @@ public class BlueGuy {
         return mySocket != null;
     }
 
+
     public boolean setReadWritable() {
         try {
             sin = mySocket.getInputStream();
@@ -107,6 +103,7 @@ public class BlueGuy {
             e.printStackTrace();
             return false;
         }
+
         return true;
     }
 
