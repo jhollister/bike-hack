@@ -167,6 +167,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final Button buttonColor8 = (Button) findViewById(R.id.btnColr8);
+        buttonColor8.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ledColors.set(ledIndex, "0000");
+                setTextViewValue(R.id.TextViewColorsValue, ledColors.get(ledIndex).toString());
+            }
+        });
+
         final Button buttonIncIndex = (Button) findViewById(R.id.btnLedUp);
         buttonIncIndex.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
