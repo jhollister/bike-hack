@@ -1,35 +1,32 @@
 #include "bluetooth.h"
 
-Bluetooth::Bluetooth(void) : BluetoothSerial(BT_RX, BT_TX) {
-    BluetoothSerial.begin(9600);
-    BluetoothSerial.println("Bluetooth on...");
+Bluetooth::Bluetooth(void) { // : BluetoothSerial(BT_RX, BT_TX) {
+    Serial.begin(9600);
+    Serial.setTimeout(300);
+    Serial.println("Bluetooth on...");
 }
 
 boolean Bluetooth::available(void) {
-    return BluetoothSerial.available();
+    return Serial.available();
 }
 
 void Bluetooth::write_string(String snd_msg) {
-    BluetoothSerial.println(snd_msg);
+    Serial.println(snd_msg);
 }
 
 void Bluetooth::write(char data) {
-    BluetoothSerial.write(data);
+    Serial.write(data);
 }
 
 String Bluetooth::read_string(void) {
     String msg = "";
-    char c = ' ';
-    if (!BluetoothSerial.available()) {
+    if (!Serial.available()) {
         return msg;
     }
-    while (c != '\n' && c != 0) {
-        if (BluetoothSerial.available()) {
-            c = char(BluetoothSerial.read());
-            if (c != '\n')
-                msg += c;
-        }
+    else {
+        msg = Serial.readString();
     }
+    Serial.print(msg);
     return msg;
 }
 
