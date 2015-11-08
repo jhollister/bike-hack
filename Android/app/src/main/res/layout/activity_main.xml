@@ -1,34 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
+    android:layout_height="fill_parent"
+    android:shrinkColumns="*"
+    android:stretchColumns="*"
+    android:background="#fff">
 
-    <android.support.design.widget.AppBarLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <TableRow
+        android:layout_height="match_parent"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/TextViewSwitches" android:text="Switches:"
+            android:layout_weight="1" android:background="#fff"
+            android:textColor="#000000"
+            android:padding="20dip" android:gravity="center"/>
+    </TableRow>
+
+    <!-- Row 1 with single column -->
+    <TableRow
+        android:layout_height="match_parent"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bluetooth"
+            android:id="@+id/switch1"
+            android:layout_column="0"
+            android:layout_span="2"
+            android:checked="true" />
+    </TableRow>
+
+    <TableRow
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="On/Off"
+            android:id="@+id/switch2"
+            android:layout_column="0"
+            android:layout_span="2"
+            android:checked="true" />
+    </TableRow>
 
-    </android.support.design.widget.AppBarLayout>
+    <TableRow
+        android:layout_height="match_parent"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
 
-    <include layout="@layout/content_main" />
+        <TextView
+            android:id="@+id/TextViewPatterns" android:text="Patterns:"
+            android:layout_weight="1" android:background="#fff"
+            android:textColor="#000000"
+            android:padding="20dip" android:gravity="center"/>
+        <TextView
+            android:id="@+id/TextViewPatternsValue" android:text=""
+            android:layout_weight="1" android:background="#fff"
+            android:textColor="#000000"
+            android:padding="20dip" android:gravity="center"/>
+    </TableRow>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
+    <!-- Row 2 with 3 columns -->
+    <TableRow
+        android:id="@+id/tableRow1"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_input_add" />
+        android:layout_width="match_parent">
 
-</android.support.design.widget.CoordinatorLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pat1"
+            android:id="@+id/btnPat1"
+            android:layout_column="0" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pat2"
+            android:id="@+id/btnPat2"
+            android:layout_column="1" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pat3"
+            android:id="@+id/btnPat3"
+            android:layout_column="2" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pat4"
+            android:id="@+id/btnPat4"
+            android:layout_column="3" />
+    </TableRow>
+
+    <TableRow
+        android:layout_height="match_parent"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
+
+        <TextView
+        android:id="@+id/TextViewColors" android:text="Colors (RGB):"
+        android:layout_weight="1" android:background="#fff"
+        android:textColor="#000000"
+        android:padding="20dip" android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/TextViewColorsValue" android:text=""
+            android:layout_weight="1" android:background="#fff"
+            android:textColor="#000000"
+            android:padding="20dip" android:gravity="center"/>
+    </TableRow>
+
+    <!-- Row 3 -->
+    <TableRow
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Red"
+            android:id="@+id/btnColr1"
+            android:layout_column="0" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Green"
+            android:id="@+id/btnColr2"
+            android:layout_column="0" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Blue"
+            android:id="@+id/btnColr3"
+            android:layout_column="0" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cyan"
+            android:id="@+id/btnColr4"
+            android:layout_column="0" />
+    </TableRow>
+
+    <!-- Row 4 -->
+    <TableRow
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Magenta"
+            android:id="@+id/btnColr5"
+            android:layout_column="0" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yellow"
+            android:id="@+id/btnColr6"
+            android:layout_column="0" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="White"
+            android:id="@+id/btnColr7"
+            android:layout_column="0" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_height="match_parent"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/TextViewSave" android:text="Save?"
+            android:layout_weight="1" android:background="#fff"
+            android:textColor="#000000"
+            android:padding="20dip" android:gravity="center"/>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yes"
+            android:id="@+id/btnSend"
+            android:layout_column="0" />
+    </TableRow>
+
+</TableLayout>
