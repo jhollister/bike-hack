@@ -41,8 +41,7 @@ public class BlueGuy {
             if(connect(macAddress)) {
                 Log.d(TAG, "Succeeded to connect!");
                 setReadWritable();
-                if(write("Hello from " + android.os.Build.MANUFACTURER + android.os.Build.PRODUCT +
-                "!\n")) {
+                if(write("hello\n")) {
                     Log.d(TAG, "Write successful");
                 } else {
                     Log.d(TAG, "Write failed");

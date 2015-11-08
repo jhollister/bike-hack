@@ -20,7 +20,7 @@ import android.widget.Toast;
 import java.util.HashMap;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
     private final String TAG = MainActivity.class.getSimpleName();
     private final String macAddress = "20:C9:D0:BA:44:2C";
     private BlueGuy bt = null;
@@ -32,6 +32,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
 
         init();
 
@@ -99,7 +101,6 @@ public class MainActivity extends Activity {
         final Button buttonSend = (Button) findViewById(R.id.btnSend);
         buttonSend.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                data.put("save", 1);
                 send();
             }
         });
@@ -107,7 +108,7 @@ public class MainActivity extends Activity {
         final Button buttonColor1 = (Button) findViewById(R.id.btnColr1);
         buttonColor1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                color = "100";
+                color = "0100";
                 setTextViewValue(R.id.TextViewColorsValue, color);
             }
         });
@@ -115,7 +116,7 @@ public class MainActivity extends Activity {
         final Button buttonColor2 = (Button) findViewById(R.id.btnColr2);
         buttonColor2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                color = "010";
+                color = "0010";
                 setTextViewValue(R.id.TextViewColorsValue, color);
             }
         });
@@ -123,7 +124,7 @@ public class MainActivity extends Activity {
         final Button buttonColor3 = (Button) findViewById(R.id.btnColr3);
         buttonColor3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                color = "001";
+                color = "0001";
                 setTextViewValue(R.id.TextViewColorsValue, color);
             }
         });
@@ -131,7 +132,7 @@ public class MainActivity extends Activity {
         final Button buttonColor4 = (Button) findViewById(R.id.btnColr4);
         buttonColor4.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                color = "110";
+                color = "0110";
                 setTextViewValue(R.id.TextViewColorsValue, color);
             }
         });
@@ -139,7 +140,7 @@ public class MainActivity extends Activity {
         final Button buttonColor5 = (Button) findViewById(R.id.btnColr5);
         buttonColor5.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                color = "101";
+                color = "0101";
                 setTextViewValue(R.id.TextViewColorsValue, color);
             }
         });
@@ -147,7 +148,7 @@ public class MainActivity extends Activity {
         final Button buttonColor6 = (Button) findViewById(R.id.btnColr6);
         buttonColor6.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                color = "011";
+                color = "0011";
                 setTextViewValue(R.id.TextViewColorsValue, color);
             }
         });
@@ -155,7 +156,7 @@ public class MainActivity extends Activity {
         final Button buttonColor7 = (Button) findViewById(R.id.btnColr7);
         buttonColor7.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                color = "111";
+                color = "0111";
                 setTextViewValue(R.id.TextViewColorsValue, color);
             }
         });
@@ -229,10 +230,9 @@ public class MainActivity extends Activity {
 
     private void init() {
         pattern = "1";
-        color = "100";
+        color = "0100";
         data.put("bt", 1);
         data.put("on", 1);
-        data.put("save", 0);
     }
 
     private void setTextViewValue(int id, String str) {
@@ -243,7 +243,7 @@ public class MainActivity extends Activity {
     private void send() {
         int numLEDs = 30;
         String tmpString = "";
-        String tmpColor = "000";
+        String tmpColor = "0000";
 
         if (data.get("bt") != 1) {
             Toast.makeText(getApplicationContext(), "Bluetooth not connected!", Toast.LENGTH_SHORT).show();
@@ -259,7 +259,7 @@ public class MainActivity extends Activity {
             tmpString += tmpColor;
         }
 
-        bt.write(pattern + tmpString + "\n");
+        bt.write(pattern + binToHex(tmpString) + "\n");
     }
 
     private boolean doConnect() {
@@ -279,5 +279,18 @@ public class MainActivity extends Activity {
             }
         }
         return false;
+    }
+
+    public String binToHex(String bin) {
+        String tmp = "";
+        int len = bin.length();
+        for (int i = 1; i < len + 1; i++) {
+            if ((i > 0) && (i % 4 == 0)) {
+                String tf = bin.substring(0, 4);
+                bin = bin.substring(4);
+                tmp += Integer.toString(Integer.parseInt(tf, 2), 16);
+            }
+        }
+        return tmp;
     }
 }
