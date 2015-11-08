@@ -20,6 +20,9 @@ void Bluetooth::write(char data) {
 String Bluetooth::read_string(void) {
     String msg = "";
     char c = ' ';
+    if (!BluetoothSerial.available()) {
+        return msg;
+    }
     while (c != '\n' && c != 0) {
         if (BluetoothSerial.available()) {
             c = char(BluetoothSerial.read());
