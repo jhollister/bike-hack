@@ -1,6 +1,6 @@
 #include "pixel.h"
 
-void PIXEL::blick(void){
+void PIXEL::blink(void){
 	for(uint16_t i = 0; i < size; i++){
  		strip.setPixelColor(i,strip.Color(Neo[i].red,Neo[i].green,Neo[i].blue));
 	}
@@ -56,7 +56,7 @@ void PIXEL::colorSetAll(uint32_t c, uint8_t wait){//set all color then show
 	strip.show();
 }
 
-void PIXEL::diplay(unsigned int pattern){
+void PIXEL::display(unsigned int pattern){
 	switch(pattern){
 		case 2:
 			follow();

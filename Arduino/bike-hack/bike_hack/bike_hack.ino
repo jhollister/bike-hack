@@ -1,12 +1,16 @@
+#include <Adafruit_NeoPixel.h>
 #include "pixel.h"
+#include <SoftwareSerial.h>
+
+PIXEL hack;
 
 void setup(){
-  strip.begin();
-  strip.show();
-  pixel hack;
+  hack.strip.begin();
+  hack.strip.show();
+  Serial.begin(9600);
 }
 
 void loop(){
     hack.update();
-    hack.display();
+    hack.display(1);
 }

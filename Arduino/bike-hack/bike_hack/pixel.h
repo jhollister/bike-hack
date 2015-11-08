@@ -13,14 +13,14 @@ class PIXEL {
 		void follow(void); 	//pattern 2
 		void squeeze(void); //patter 3
 		void shift(void);	//pattern 4
-		void colorWipe(void);	//set pixel - 1 at a time 
-		void colorWipeAll(void);//set pixel - all at once
+		void colorSet(uint32_t c, uint8_t wait);	//set pixel - 1 at a time 
+		void colorSetAll(uint32_t c, uint8_t wait);//set pixel - all at once
 		LED_Array Neo;
 		int size = Neo.length();
-		Adafruit_NeoPixel strip = Adafruit_NeoPixel(size,NEO_RGB + NEO_KHZ800);
 	public:
 		void update(void);
 		void display(unsigned int pattern);
+                Adafruit_NeoPixel strip = Adafruit_NeoPixel(size,PIN,NEO_GRB + NEO_KHZ800);
 };
 
 #endif
