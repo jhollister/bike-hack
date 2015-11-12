@@ -38,15 +38,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-
-// Bluetooth Dongle HC-06 MAC Address
-// 98:D3:31:40:0B:7E
-
-// Bluetooth Pebble watch
-// 00:17:EC:51:9B:30
-
-// 20:C9:D0:BA:44:2C
-// 20:C9:D0:BA:44:2C
 public class MainActivity extends AppCompatActivity {
     private final String TAG = MainActivity.class.getSimpleName();
 
