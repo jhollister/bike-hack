@@ -540,7 +540,6 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(TAG, "Bluetooth now connected!");
                             pauseBlueThread();
                         } else {
-                            uiHandler.sendEmptyMessage(1);
                             Log.d(TAG, "Bluetooth failed to connect.");
                         }
                     }
