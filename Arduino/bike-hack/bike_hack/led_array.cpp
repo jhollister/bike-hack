@@ -31,15 +31,14 @@ void LED_Array::fetch_leds(void) {
     String msg = bluetooth.read_string();
     bluetooth.write_string(msg);
     msg.trim();
-    int num_leds = msg.length() - 1;
+    int num_leds = (msg.length() - 1 > array_size) ? array_size: msg.length() - 1;
     bluetooth.write_string("Number of leds: " + String(num_leds));
     if (msg.length()) {
         pattern = hex_to_int(msg[0]);
         bluetooth.write_string("Pattern: " + String(pattern));
     }
-    for (int i = 0; i < array_size; i++) {
-        if (i  < num_leds) {
-            int current_val = hex_to_int(msg[i+1]);
+    for (int i = 0; i < num_leds; i++) {
+			int current_val = hex_to_int(msg[i+1]);
             led_array[i].red = current_val & 4 ? 255 : 0;
             led_array[i].green = current_val & 2 ? 255 : 0;
             led_array[i].blue = current_val & 1 ? 255 : 0;
@@ -47,12 +46,6 @@ void LED_Array::fetch_leds(void) {
                                     + " RED:" + String(led_array[i].red)
                                     + " GREEN:" + String(led_array[i].green)
                                     + " BLUE:" + String(led_array[i].blue));
-        }
-        else {
-            led_array[i].red = 0;
-            led_array[i].green = 0;
-            led_array[i].blue = 0;
-        }
     }
 }
 
