@@ -12,23 +12,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.util.Set;
 import java.util.UUID;
 
 /**
  * Created by torcherist on 11/7/15.
  */
 
-// Bluetooth Dongle HC-06 MAC Address
-// 98:D3:31:40:0B:7E
-
-// Bluetooth Pebble watch
-// 00:17:EC:51:9B:30
 public class BlueGuy {
     private final String TAG = BlueGuy.class.getSimpleName();
-
-    private final String macAddress = "98:D3:31:40:0B:7E";
-    // Bluetooth Dongle HC-06 MAC Address
-    // 98:D3:31:40:0B:7E
     private static final int REQUEST_ENABLE_BT = 1;
     private Context context;
     private BluetoothAdapter myAdapter;
@@ -39,13 +31,17 @@ public class BlueGuy {
     private OutputStream sout;
 
     public BlueGuy(Context context) {
-        assert context == null;
+        assert this.context == null;
 
         this.context = context;
         myAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (myAdapter == null) {
+            Log.d(TAG, "Bluetooth is not supported!");
+            return;
+        }
 
         if(init()) {
-            Log.d(TAG, "init success!");
+            Log.d(TAG, "Init success!");
         } else {
             Log.d(TAG, "Failed to init!");
         }
@@ -64,9 +60,18 @@ public class BlueGuy {
         return true;
     }
 
+    public boolean isConnected() {
+        return mySocket != null && mySocket.isConnected();
+    }
+
     public boolean connect(String address) {
         BluetoothSocket tmpSocket = null;
         myDevice = myAdapter.getRemoteDevice(address);
+        if (myDevice == null) {
+            Log.d(TAG, "MD is null!");
+            return false;
+        }
+
         myUUID = myDevice.getUuids()[0].getUuid();
 
         try {
@@ -82,18 +87,22 @@ public class BlueGuy {
         myAdapter.cancelDiscovery();
         if (mySocket != null) {
             try {
-                Log.d(TAG, "MyUUID: " + myUUID.toString());
-                mySocket.connect();
+                Log.d(TAG, "Trying to connect!");
+                tmpSocket.connect();
                 Log.d(TAG, "Now Connected!");
             } catch (IOException e1) {
                 e1.printStackTrace();
                 try {
-                    mySocket.close();
+                    tmpSocket.close();
+                    tmpSocket = null;
                 } catch (IOException e2) {
                     e2.printStackTrace();
+                    return false;
                 }
             }
         }
+
+        mySocket = tmpSocket;
 
         return mySocket != null;
     }
@@ -148,7 +157,11 @@ public class BlueGuy {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            Log.d(TAG, "BT closed!");
+            Log.d(TAG, "Closed!");
         }
+    }
+
+    public BluetoothAdapter getMyAdapter() {
+        return this.myAdapter;
     }
 }

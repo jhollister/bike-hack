@@ -6,16 +6,17 @@
     android:layout_height="fill_parent"
     android:shrinkColumns="*"
     android:stretchColumns="*"
-    android:background="#fff">
+    android:background="#fff"
+    android:id="@+id/main_layout">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+    <!--<android.support.v7.widget.Toolbar-->
+        <!--android:id="@+id/my_toolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="?attr/actionBarSize"-->
+        <!--android:background="?attr/colorPrimary"-->
+        <!--android:elevation="4dp"-->
+        <!--android:theme="@style/ThemeOverlay.AppCompat.ActionBar"-->
+        <!--android:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>-->
 
     <TableRow
         android:layout_height="match_parent"
@@ -39,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Bluetooth"
-            android:id="@+id/switch1"
+            android:id="@+id/main_switch1"
             android:layout_column="0"
             android:layout_span="2"
             android:checked="true" />
@@ -54,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="On/Off"
-            android:id="@+id/switch2"
+            android:id="@+id/main_switch2"
             android:layout_column="0"
             android:layout_span="2"
             android:checked="true" />
