@@ -18,6 +18,7 @@ Needed software or libraries:
 * `Adafruit NeoPixel Library` [Github Link](https://github.com/adafruit/Adafruit_NeoPixel "Adafruit_NeoPixel") 
 * `Arduino IDE` [Arduino Software](https://www.arduino.cc/en/Main/Software)
 * `Android Studio` [Android SDK](https://developer.android.com/sdk/index.html)
+* `Pebble SDK` [Pebble SDK](https://developer.getpebble.com/sdk/)
   
 *Arduino*: Compile and flash the `bike-hack/Ardiuno/Arduino.ino` using the Arduino IDE.
 
