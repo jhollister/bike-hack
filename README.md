@@ -19,10 +19,11 @@ Needed software or libraries:
 * `Arduino IDE` [Arduino Software](https://www.arduino.cc/en/Main/Software)
 * `Android Studio` [Android SDK](https://developer.android.com/sdk/index.html)
   
-Compile and flash the `bike-hack/Ardiuno/Arduino.ino` using the Arduino IDE.
+*Arduino*: Compile and flash the `bike-hack/Ardiuno/Arduino.ino` using the Arduino IDE.
 
+*Android*: We must launch Android Studio to import our Gradle Project. After launch we choose to **Import project (Eclipse ADT, Gradle, etc)**. You will be met with a directory chooser. Navigate to and choose the `bike-hack/Android` directory of this repository. Android Studio will create the necessary project files for you. Follow the Android instructions on how to [prepare](http://developer.android.com/tools/device.html) your device for [running/debugging](http://developer.android.com/tools/building/building-studio.html) the app onto your phone.
 
-
+*Pebble*: Make sure to install the required Pebble developer software by visiting the [Pebble Developer site](https://developer.getpebble.com/) (Pebble SDK 3.6.2). Our Pebble app is written in C. Copy or have your Pebble project's working directory be our `bike-hack/Pebble` directory. Follow the instructions on the Pebble Developer site on how to upload apps to the smartwatch.
 
 ## Wiring
 **WS2812 LEDs to Arduino Uno**  
@@ -49,7 +50,7 @@ Pebble Classic - smartwatch
  Synchronization with fellow bicylists  
  Pattern Builder
 
-## First appearance
+## First Appearance
 
 University of California, Riverside
 Citrus Hack Fall 2015
