@@ -55,3 +55,6 @@ Pebble Classic - smartwatch
 
 University of California, Riverside
 Citrus Hack Fall 2015
+
+## Demonstration
+![Android GIF](https://raw.github.com/jhollister/bike-hack/master/AndroidDemo_v1.0.2.gif)
