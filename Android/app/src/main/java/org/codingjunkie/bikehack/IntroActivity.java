@@ -1,6 +1,7 @@
 package org.codingjunkie.bikehack;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,6 +45,14 @@ public class IntroActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume!");
+        try {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            String version = pInfo.versionName;
+            Toast.makeText(this, "Version " + version + "." + pInfo.versionCode, Toast.LENGTH_LONG)
+                    .show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
