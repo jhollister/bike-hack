@@ -3,9 +3,13 @@ package org.codingjunkie.bikehack;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -117,6 +121,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume!");
+
+        // Load values from database
+        loadSavedConfiguration();
 
         setTextViewValue(R.id.TextViewPatternsValue, pattern);
         setTextViewValue(R.id.TextViewColorsValue, color);
@@ -284,7 +291,37 @@ public class MainActivity extends AppCompatActivity {
 
     private void send() {
         String tmpString = "";
-        String tmpColor = "0000";
+        boolean isOff = false;
+        String binColorString = "";
+        String hexColorString = "";
+
+        if (data.get("on") == 0) {
+            isOff = true;
+        }
+
+        for (int i = 0; i < numLEDs; i++) {
+            tmpString += (isOff ? "0000" : ledColors.get(i));
+            binColorString += ledColors.get(i);
+        }
+
+        hexColorString = binToHex(tmpString);
+
+        // Save current configuration
+        DataHelper helper = DataHelper.getInstance(getApplicationContext());
+        SQLiteDatabase db = helper.getWritableDatabase();
+
+        // Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+        values.put(DataContract.Settings.CN_NAME, "panel_pattern");
+        values.put(DataContract.Settings.CN_VALUE, pattern);
+        long newRowId = db.replace(DataContract.Settings.TABLE_NAME, null, values);
+
+        values.put(DataContract.Settings.CN_NAME, "panel_colors");
+        values.put(DataContract.Settings.CN_VALUE, binColorString);
+        newRowId = db.replace(DataContract.Settings.TABLE_NAME, null, values);
+        Log.d(TAG, "Finished saving LED configuration!");
+
+
 
         if (wheel == null || data.get("bt") != 1 || !wheel.isConnected()) {
             Toast.makeText(MainActivity.this, "Bluetooth not connected!",
@@ -293,15 +330,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        if (data.get("on") == 0) {
-            tmpColor = "";
-        }
-
-        for (int i = 0; i < numLEDs; i++) {
-            tmpString += (tmpColor.equals("") ? "0000" : ledColors.get(i));
-        }
-
-        if(!wheel.write(pattern + binToHex(tmpString) + "\n")) {
+        if(!wheel.write(pattern + hexColorString + "\n")) {
             Log.d(TAG, "Failed to write to wheel! Make sure you are connected to remote device.");
         } else {
             Toast.makeText(MainActivity.this, "Message was sent to device.",
@@ -375,9 +404,51 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void loadSavedConfiguration() {
+        SQLiteOpenHelper helper = DataHelper.getInstance(getApplicationContext());
+        SQLiteDatabase db = helper.getReadableDatabase();
+
+        // Get led pattern
+        Cursor c = db.query(DataContract.Settings.TABLE_NAME,
+                new String[] {DataContract.Settings.CN_VALUE},
+                DataContract.Settings.CN_NAME + "=?", new String[]{"panel_pattern"}, null, null,
+                null);
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+            pattern =  c.getString(0);
+            c.moveToNext();
+        }
+        c.close();
+
+        // Get led colors
+        c = db.query(DataContract.Settings.TABLE_NAME,
+                new String[] {DataContract.Settings.CN_VALUE},
+                DataContract.Settings.CN_NAME + "=?", new String[]{"panel_colors"}, null, null,
+                null);
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+            String tmpColors = c.getString(0);
+            String tmpLedString = "";
+            ledColors.clear();
+            for (int i = 0; i < tmpColors.length(); i++) {
+                tmpLedString += tmpColors.charAt(i);
+                if ((i+1) % 4 == 0) {
+                    ledColors.add(tmpLedString);
+                    tmpLedString = "";
+                }
+            }
+            c.moveToNext();
+        }
+        c.close();
+
+        // Set the color value of LED0
+        color = ledColors.get(0).toString();
+        Log.d(TAG, "Finished loading LED configuration!");
+    }
+
     private void setupInputActions() {
-        Switch btSwitch = (Switch)  findViewById(R.id.main_switch1);
-        Switch onOffSwitch = (Switch)  findViewById(R.id.main_switch2);
+        Switch btSwitch = (Switch) findViewById(R.id.main_switch1);
+        Switch onOffSwitch = (Switch) findViewById(R.id.main_switch2);
 
         btSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
